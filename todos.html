@@ -7,6 +7,7 @@
 
 <template name="todos">
   <h2>Todos</h2>
+  {{> addTodo}}
   <ul>
   {{#each todo}}
     {{> todoItem}}
@@ -16,4 +17,11 @@
 
 <template name="todoItem">
   <li>{{name}}</li>
+</template>
+
+<template name="addTodo">
+  <form>
+    Create a task:
+    <input type="text" placeholder="Type a task" name="todoName" />
+  </form>
 </template>
