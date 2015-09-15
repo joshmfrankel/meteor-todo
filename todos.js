@@ -11,7 +11,7 @@ if(Meteor.isClient){
    */
   Template.todos.helpers({ // todos refers to the template
     'todo': function() {
-      return Todos.find();
+      return Todos.find({}, {sort: {createdAt: -1}});
     }
   });
 }
