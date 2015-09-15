@@ -29,6 +29,18 @@ if(Meteor.isClient){
       $('[name="todoName"]').val('');
     }
   });
+
+  // todoItem is the template name attr
+  Template.todoItem.events({
+    'click .delete-todo': function(event) {
+      event.preventDefault();
+      var documentId = this._id;
+      var confirm = window.confirm("Delete this task?");
+      if (confirm) {
+        Todos.remove({ _id: documentId });
+      }
+    }
+  });
 }
 
 if(Meteor.isServer){
