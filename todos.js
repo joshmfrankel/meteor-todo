@@ -15,7 +15,17 @@ if(Meteor.isClient){
     }
   });
 
-  // Events block
+  Template.todoItem.helpers({
+    'checked': function() {
+      var isCompleted = this.completed;
+      return (isCompleted ? 'checked' : '');
+    }
+  });
+
+
+  /**
+   * Events
+   */
   // addTodo is the template name
   Template.addTodo.events({
     'submit form': function(event) {
@@ -49,6 +59,12 @@ if(Meteor.isClient){
         var todoItem = target.val();
         Todos.update({ _id: documentId }, {$set: { name: todoItem }});
       }
+    },
+    'change [type=checkbox]': function() {
+      var documentId = this._id;
+      var isCompleted = this.completed;
+      console.log(isCompleted);
+      Todos.update({ _id: documentId }, {$set: { completed: !isCompleted }});
     }
   });
 }
