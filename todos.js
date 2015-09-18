@@ -6,7 +6,14 @@ Todos = new Meteor.Collection('todos');
 /**
  * Routes
  */
+Router.configure({
+  layoutTemplate: 'main'
+});
 Router.route('/register');
+Router.route('/login');
+Router.route('/', {
+  template: 'home'
+});
 
 if(Meteor.isClient){
   // client code goes here
