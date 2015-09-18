@@ -3,6 +3,11 @@
  */
 Todos = new Meteor.Collection('todos');
 
+/**
+ * Routes
+ */
+Router.route('/register');
+
 if(Meteor.isClient){
   // client code goes here
 
