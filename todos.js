@@ -2,6 +2,7 @@
  * Collections
  */
 Todos = new Meteor.Collection('todos');
+Lists = new Meteor.Collection('lists');
 
 /**
  * Routes
@@ -14,6 +15,11 @@ Router.route('/login');
 Router.route('/', {
   name: 'home',
   template: 'home'
+});
+Router.route('/list/:_id', {
+  data: function() {
+
+  }
 });
 
 if(Meteor.isClient){
@@ -41,6 +47,12 @@ if(Meteor.isClient){
     },
     'completedTodos': function() {
       return Todos.find({ completed: true }).count();
+    }
+  });
+
+  Template.lists.helpers({
+    'list': function() {
+      return Lists.find({}, {sort: {name: 1}});
     }
   });
 
@@ -85,8 +97,18 @@ if(Meteor.isClient){
     'change [type=checkbox]': function() {
       var documentId = this._id;
       var isCompleted = this.completed;
-      console.log(isCompleted);
       Todos.update({ _id: documentId }, {$set: { completed: !isCompleted }});
+    }
+  });
+
+  Template.addList.events({
+    'submit form': function(event) {
+      event.preventDefault();
+      var listName = $('[name=listName]').val();
+      Lists.insert({
+        name: listName
+      });
+      $('[name=listName]').val('');
     }
   });
 }
