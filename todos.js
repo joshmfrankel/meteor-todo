@@ -17,6 +17,7 @@ Router.route('/', {
   template: 'home'
 });
 Router.route('/list/:_id', {
+  name: 'listPage',
   template: 'listPage',
   data: function() {
     var currentList = this.params._id;
@@ -32,7 +33,9 @@ if(Meteor.isClient){
    */
   Template.todos.helpers({ // todos refers to the template
     'todo': function() {
-      return Todos.find({}, {sort: {createdAt: -1}});
+      var currentList = this._id;
+      // only return todos if they are found with specific list id
+      return Todos.find({ listId: currentList }, {sort: {createdAt: -1}});
     }
   });
 
@@ -45,10 +48,12 @@ if(Meteor.isClient){
 
   Template.todosCount.helpers({
     'totalTodos': function() {
-      return Todos.find().count();
+      var currentList = this._id;
+      return Todos.find({ listId: currentList }).count();
     },
     'completedTodos': function() {
-      return Todos.find({ completed: true }).count();
+      var currentList = this._id;
+      return Todos.find({ listId: currentList, completed: true }).count();
     }
   });
 
@@ -111,6 +116,9 @@ if(Meteor.isClient){
       var listName = $('[name=listName]').val();
       Lists.insert({
         name: listName
+      }, function (error, results) {
+        // Immediately runs once new list inserted
+        Router.go('listPage', { _id: results });
       });
       $('[name=listName]').val('');
     }
