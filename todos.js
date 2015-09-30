@@ -17,8 +17,10 @@ Router.route('/', {
   template: 'home'
 });
 Router.route('/list/:_id', {
+  template: 'listPage',
   data: function() {
-
+    var currentList = this.params._id;
+    return Lists.findOne({ _id: currentList });
   }
 });
 
@@ -65,10 +67,12 @@ if(Meteor.isClient){
     'submit form': function(event) {
       event.preventDefault();
       var todoName = $('[name="todoName"]').val();
+      var currentList = this._id;
       Todos.insert({
         name: todoName,
         completed: false,
-        createdAt: new Date()
+        createdAt: new Date(),
+        listId: currentList
       });
       $('[name="todoName"]').val('');
     }
